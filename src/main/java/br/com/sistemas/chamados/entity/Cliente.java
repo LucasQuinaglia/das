@@ -15,7 +15,13 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(lenght = 20)
+    @Column(nullable = false, length = 100)
+    private String nome;
+
+    @Column(nullable = false, unique = true, length = 120)
+    private String email;
+
+    @Column(length = 20)
     private String telefone;
 
     public Cliente() {
