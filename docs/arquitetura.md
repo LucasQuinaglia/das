@@ -13,7 +13,7 @@ flowchart LR
   Tecnico[Técnico] --> UC4
   Tecnico --> UC5((Registrar comentário))
   Tecnico --> UC6((Alterar status))
-  Admin[Administrador] --> UC7((Visualizar dashboard - futuro))
+  Admin[Administrador] --> UC7((Visualizar dashboard))
   Admin --> UC8((Atribuir técnico))
   Admin --> UC9((Manter categorias e técnicos))
 ```
@@ -127,4 +127,4 @@ flowchart TD
   Chamados --> Detalhe[Detalhe: status, técnico e comentários]
 ```
 
-O mapa de telas descreve uma evolução futura; esta entrega implementa somente a API REST.
+O mapa de telas descreve uma evolução futura; esta entrega implementa a API REST, autenticação HTTP Basic, documentação OpenAPI e endpoint de dashboard, sem interface web.
