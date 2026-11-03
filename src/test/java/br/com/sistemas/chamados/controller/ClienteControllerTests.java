@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,6 +22,7 @@ import br.com.sistemas.chamados.dto.ClienteResponse;
 import br.com.sistemas.chamados.service.ClienteService;
 
 @WebMvcTest(ClienteController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class ClienteControllerTests {
     @Autowired private MockMvc mvc;
     @MockitoBean private ClienteService service;
