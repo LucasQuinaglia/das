@@ -25,7 +25,7 @@ import br.com.sistemas.chamados.repository.ClienteRepository;
 import br.com.sistemas.chamados.repository.TecnicoRepository;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @Transactional
 class ChamadosApiTests {
     @Autowired private MockMvc mvc;
@@ -133,6 +133,10 @@ class ChamadosApiTests {
                 .andExpect(jsonPath("$.totalElements").value(1));
         mvc.perform(get("/clientes/{clienteId}/chamados", cliente.getId()))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.content[0].id").value(chamadoId));
+        mvc.perform(get("/dashboard")).andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(1))
+                .andExpect(jsonPath("$.porStatus.ABERTO").value(1))
+                .andExpect(jsonPath("$.porPrioridade.ALTA").value(1));
 
         mvc.perform(patch("/chamados/{id}/atribuir", chamadoId).contentType(MediaType.APPLICATION_JSON)
                 .content("""
