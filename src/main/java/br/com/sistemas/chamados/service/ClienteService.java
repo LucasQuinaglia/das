@@ -22,15 +22,16 @@ public class ClienteService {
 
     @Transactional
     public ClienteResponse criar(ClienteRequest dto) {
-        if (repository.existsByEmail(dto.Email())) {
-            throw new RegraNegocioException("Já existe um cliente com o e-mail" + dto.Email());
+        String email = normalizarEmail(dto.email());
+        if (repository.existsByEmail(email)) {
+            throw new RegraNegocioException("Já existe um cliente com o e-mail " + email);
         }
-        Cliente salvo = repository.save(new Cliente(dto.nome(), dto.email(), dto.telefone()));
+        Cliente salvo = repository.save(new Cliente(dto.nome().trim(), email, dto.telefone()));
         return ClienteResponse.de(salvo);
     }
 
     @Transactional(readOnly = true)
-    public List<ClienteResponse> Listar() {
+    public List<ClienteResponse> listar() {
         return repository.findAll().stream().map(ClienteResponse::de).toList();
     }
 
@@ -42,12 +43,13 @@ public class ClienteService {
     @Transactional
     public ClienteResponse atualizar(Long id, ClienteRequest dto) {
         Cliente cliente = buscarEntity(id);
-        if (repository.existsByEmailAndIdNot(dto.email(), id)) {
-            throw new RegraNegocioException("ja existe cliente com o e-mail" + dto.email());
+        String email = normalizarEmail(dto.email());
+        if (repository.existsByEmailAndIdNot(email, id)) {
+            throw new RegraNegocioException("Já existe um cliente com o e-mail " + email);
         }
 
-        cliente.setNome(dto.nome());
-        cliente.setEmail(dto.email());
+        cliente.setNome(dto.nome().trim());
+        cliente.setEmail(email);
         cliente.setTelefone(dto.telefone());
         return ClienteResponse.de(cliente);
 
@@ -60,6 +62,10 @@ public class ClienteService {
 
     private Cliente buscarEntity(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente" + id + "nao encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente " + id + " não encontrado"));
+    }
+
+    private String normalizarEmail(String email) {
+        return email.trim().toLowerCase();
     }
 }

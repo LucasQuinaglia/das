@@ -40,7 +40,7 @@ public class ClienteController {
         return service.listar();
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public ClienteResponse buscar(@PathVariable Long id) {
         return service.buscar(id);
     }
